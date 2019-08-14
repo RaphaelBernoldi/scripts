@@ -1,6 +1,6 @@
 function printHelp(){
 	echo "**************************Print help*****************************"
-	echo "Os parametros disponíveis são: java | maven | mysql | jenkins | wildfly | docker"
+	echo "Os parametros disponíveis são: java | maven | mysql | jenkins | wildfly | docker | sublime-text"
 	echo "Exemplo install-ambiente.sh <<command>> <<command>> <<command>>"
 	echo "**************************Print help*****************************"
 }
@@ -101,6 +101,21 @@ function installDocker(){
 	echo "Docker installed!"
 }
 
+
+function installSublime(){
+	echo "Install Sublime..."
+
+	cd ~/Downloads
+
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+
+	sudo apt-add-repository "deb https://download.sublimetext.com/ apt/stable/"
+
+	sudo apt update
+
+	sudo apt-get install sublime-text
+}
+
 #Default
 echo "Init..."
 
@@ -128,8 +143,13 @@ for param in $*; do
 	if [ $param == "wildfly" ]; then
 		installWildfly
 	fi
+
 	if [ $param == "docker"]; then
 		installDocker
+	fi
+
+	if [ $param == "sublime-text"]; then
+		installSublime
 	fi
 done
 
