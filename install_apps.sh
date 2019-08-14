@@ -1,27 +1,6 @@
-
-
-#Configuração do hosts local
-
-#EleevaIT
-#172.16.1.96 		jenkins
-#172.16.1.121		portal-application-01
-#172.16.1.123 		portal-collector-01
-#172.16.1.124		portal-database-01
-#172.16.1.125		portal-homolog-01
-
-
-
-
-#update user set authentication_string=PASSWORD('root') where user='root';
-#FLUSH PRIVILEGES;
-#create database portal_db charset utf8
-#create database liferay_db charset utf8
-#vim /etc/my.cnf
-#skip_grant_tables
-
 function printHelp(){
 	echo "**************************Print help*****************************"
-	echo "Os comandos disponíveis são: java maven mysql jenkins wildfly"
+	echo "Os parametros disponíveis são: java | maven | mysql | jenkins | wildfly | docker"
 	echo "Exemplo install-ambiente.sh <<command>> <<command>> <<command>>"
 	echo "**************************Print help*****************************"
 }
@@ -96,6 +75,32 @@ function installWildfly() {
 		Em /etc/profile (CentOS)"
 }
 
+function installDocker(){
+	echo "Install Docker..."
+	#Remove possiveis versões antigas instaladas
+	sudo apt-get remove docker docker-engine docker.io
+
+	#Atualiza os pacotes do so
+	sudo apt-get update
+
+	#Add chave oficial do repositorio gpg do docker
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+	#add caminho de download no repositorio apt do ubuntu
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+	#Atualiza novamente as bibliotecas
+	sudo apt-get update
+
+	#Instalação do docker CE
+	sudo apt-get install docker-ce
+
+	#Imprime versao
+	sudo docker version
+
+	echo "Docker installed!"
+}
+
 #Default
 echo "Init..."
 
@@ -122,6 +127,9 @@ for param in $*; do
 
 	if [ $param == "wildfly" ]; then
 		installWildfly
+	fi
+	if [ $param == "docker"]; then
+		installDocker
 	fi
 done
 
