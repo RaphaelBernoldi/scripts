@@ -95,6 +95,9 @@ function installDocker(){
 	#Instalação do docker CE
 	sudo apt-get install docker-ce
 
+	#Comando para não precisar ficar dando sudo toda hora
+	sudo usermod -aG docker $(whoami)
+
 	#Imprime versao
 	sudo docker version
 
